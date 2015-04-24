@@ -49,3 +49,31 @@ Math.isPointInPoly = function (polygonPath, point) {
 Math.hackRound = function (float) {
 	return (0.5 + float) << 0;
 };
+
+/**
+ * Wrap an angle between 0 and PI
+ * @param angle Angle to wrap
+ * @returns {Number}
+ */
+Math.wrapAngle = function (angle) {
+    return angle + Math.PI2 * Math.floor((Math.PI - angle) / Math.PI2);
+}
+
+/**
+ * Angular linear interpolation
+ * @param current
+ * @param target
+ * @param delta
+ * @returns {Number}
+ */
+Math.lerpAngle = function (current, target, delta) {
+    current = Math.wrapAngle(current);
+    target = Math.wrapAngle(target);
+    if (current > Math.PI / 2 && target < -Math.PI / 2) {
+        return current + ((target + Math.PI) - (current - Math.PI)) / delta;
+    }
+    if (current < -Math.PI / 2 && target > Math.PI / 2) {
+        return current + ((target - Math.PI) - (current + Math.PI)) / delta;
+    }
+    return current + Math.wrapAngle((target - current) / delta);
+};
